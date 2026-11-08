@@ -239,6 +239,41 @@ footer{
  box-shadow:var(--shadow);
 }
 
+/* ENTRANCE LIST */
+
+.entrance-list{
+ max-width:600px;
+ margin:30px auto 0;
+ padding:25px 20px;
+ border:1px solid #765a40;
+ background:#1b1116;
+ box-shadow:var(--shadow);
+ text-align:center;
+}
+
+.entrance-list-title{
+ color:#d6b77b;
+ font-family:'Cormorant Garamond',serif;
+ letter-spacing:5px;
+ font-size:15px;
+ margin-bottom:20px;
+}
+
+.entrance-list-items{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+
+.entrance-list-item{
+ border:1px solid #594333;
+ padding:15px 8px;
+ color:#d8c6b1;
+ font-family:'Cormorant Garamond',serif;
+ font-size:13px;
+ letter-spacing:2px;
+}
+
 /* COLLECTION */
 
 .collection{
@@ -379,6 +414,7 @@ footer{
  .home-hero{padding:60px 15px}
  header{padding-top:30px}
  .panel{padding:17px}
+ .entrance-list-items{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -404,6 +440,18 @@ footer{
    静寂の中に眠る、秘密の物語へ。
   </p>
   <div class="eyebrow">PRIVATE ACCESS</div>
+ </div>
+
+ <!-- GENRE LIST -->
+ <div class="entrance-list">
+  <div class="entrance-list-title">THE COLLECTION</div>
+  <div class="goldline"></div>
+  <div class="entrance-list-items">
+   <div class="entrance-list-item">HAZBIN HOTEL</div>
+   <div class="entrance-list-item">POKÉMON</div>
+   <div class="entrance-list-item">MAJESTIC☆MAJOLICAL</div>
+   <div class="entrance-list-item">ADMIN'S DIARY</div>
+  </div>
  </div>
 
  <div class="login-panel">
