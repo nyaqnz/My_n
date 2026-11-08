@@ -1,0 +1,837 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOIR ROUGE</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #100d10;
+  --panel: #1b151a;
+  --text: #eee5dc;
+  --muted: #a99a91;
+  --red: #8d2639;
+  --gold: #b69a68;
+  --line: #46333a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Serif JP', serif;
+  transition: background .4s, color .4s;
+}
+
+button, input, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+header {
+  text-align: center;
+  padding: 38px 15px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  letter-spacing: .2em;
+  color: var(--gold);
+}
+
+.subtitle {
+  font-size: 10px;
+  letter-spacing: .35em;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+main {
+  max-width: 850px;
+  margin: auto;
+  padding: 22px 16px 70px;
+}
+
+.hero {
+  padding: 42px 25px;
+  min-height: 190px;
+  background: linear-gradient(135deg, #28151d, #120e12);
+  border: 1px solid var(--gold);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.hero h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  color: var(--gold);
+  margin: 8px 0;
+}
+
+.hero p {
+  color: #c8b7ac;
+  font-size: 12px;
+  letter-spacing: .12em;
+}
+
+.hero-small {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .3em;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  margin: 25px 0;
+}
+
+nav button {
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--text);
+  padding: 9px 15px;
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+
+nav button.active,
+nav button:hover {
+  background: var(--gold);
+  color: #171116;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 25px;
+  letter-spacing: .16em;
+  color: var(--gold);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+  margin: 30px 0 20px;
+}
+
+.login-panel, .post-form, .post {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0 13px;
+  color: var(--text);
+  background: #100d10;
+  border: 1px solid var(--line);
+  outline: none;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--gold);
+}
+
+.action {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 10px 18px;
+  margin: 4px;
+  font-size: 12px;
+}
+
+.action.primary {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+}
+
+.action:hover {
+  opacity: .75;
+}
+
+.small {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.post {
+  line-height: 1.9;
+  white-space: normal;
+}
+
+.post-meta {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: .1em;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 9px;
+  margin-bottom: 13px;
+}
+
+.post-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.post img {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  margin-top: 15px;
+  background: #080708;
+}
+
+.post-actions {
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.hidden { display: none !important; }
+
+#message {
+  font-size: 12px;
+  color: var(--gold);
+  margin: 12px 0;
+  white-space: pre-wrap;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 10px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: .2em;
+  font-size: 12px;
+}
+
+/* Pokémon / N inspired page */
+body.pokemon-page {
+  --bg: #f1f3eb;
+  --panel: #fafbf6;
+  --text: #344b39;
+  --muted: #7c8c78;
+  --line: #cbd5c4;
+  --gold: #9a8655;
+  background: #f1f3eb;
+  color: #344b39;
+}
+
+.pokemon-page header {
+  border-color: #cbd5c4;
+}
+
+.pokemon-page .logo {
+  color: #536d55;
+}
+
+.pokemon-page .hero {
+  background:
+    radial-gradient(circle at 85% 20%, #dce8d9 0, transparent 35%),
+    linear-gradient(135deg, #f8f8ef, #e8eee3 55%, #d5e1d1);
+  border-color: #b6a77c;
+  box-shadow: 0 8px 30px #0001;
+  color: #344b39;
+  min-height: 220px;
+  padding: 35px 25px;
+}
+
+.pokemon-page .hero::after {
+  content: "N";
+  position: absolute;
+  right: 22px;
+  bottom: -75px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 210px;
+  color: #829b7c;
+  opacity: .15;
+  pointer-events: none;
+}
+
+.pokemon-page .hero h2 {
+  color: #344f3c;
+  position: relative;
+  z-index: 1;
+}
+
+.pokemon-page .hero p {
+  color: #657b68;
+  position: relative;
+  z-index: 1;
+}
+
+.pokemon-page .hero-small {
+  color: #9a8655;
+  position: relative;
+  z-index: 1;
+}
+
+.pokemon-page nav button {
+  color: #536d55;
+  border-color: #9aab91;
+}
+
+.pokemon-page nav button.active,
+.pokemon-page nav button:hover {
+  background: #536d55;
+  border-color: #536d55;
+  color: #fff;
+}
+
+.pokemon-page .login-panel,
+.pokemon-page .post-form,
+.pokemon-page .post {
+  background: #fafbf6;
+  border-color: #cbd5c4;
+}
+
+.pokemon-page input,
+.pokemon-page textarea {
+  background: #fff;
+  color: #344b39;
+  border-color: #cbd5c4;
+}
+
+.pokemon-page .action {
+  color: #536d55;
+  border-color: #9aab91;
+}
+
+.pokemon-page .action.primary {
+  background: #536d55;
+  border-color: #536d55;
+  color: white;
+}
+
+.pokemon-page .section-title {
+  color: #536d55;
+  border-color: #cbd5c4;
+}
+
+.pokemon-page footer {
+  border-color: #cbd5c4;
+}
+
+@media(max-width:600px) {
+  .logo { font-size: 32px; }
+  .hero { padding: 30px 15px; }
+  .hero h2 { font-size: 28px; }
+  main { padding-left: 12px; padding-right: 12px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">NOIR ROUGE</div>
+  <div class="subtitle">PRIVATE DREAM FICTION SITE</div>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="hero-small">WELCOME TO MY WORLD</div>
+    <h2>NOIR ROUGE</h2>
+    <p>物語の扉を選んでください。</p>
+  </section>
+
+  <nav>
+    <button class="active" data-cat="all">ALL</button>
+    <button data-cat="majestic">MAJESTIC☆MAJOLICAL</button>
+    <button data-cat="hazbin">HAZBIN HOTEL</button>
+    <button data-cat="pokemon">POKÉMON</button>
+  </nav>
+
+  <section id="loginArea">
+    <h3 class="section-title">LOGIN</h3>
+    <div class="login-panel">
+      <p class="small">閲覧には共通パスワードが必要です。</p>
+      <label class="small">PASSWORD</label>
+      <input type="password" id="viewerPassword" placeholder="合言葉を入力">
+      <button class="action primary" id="viewerLogin">ENTER</button>
+
+      <details style="margin-top:20px">
+        <summary class="small">管理者ログイン</summary>
+        <label class="small">ADMIN EMAIL</label>
+        <input type="email" id="adminEmail" placeholder="管理者メールアドレス">
+        <label class="small">PASSWORD</label>
+        <input type="password" id="adminPassword" placeholder="管理者パスワード">
+        <button class="action" id="adminLogin">ADMIN LOGIN</button>
+      </details>
+      <div id="message"></div>
+    </div>
+  </section>
+
+  <section id="siteArea" class="hidden">
+    <div class="small" id="loginStatus"></div>
+    <button class="action" id="logout">LOG OUT</button>
+
+    <section id="adminArea" class="hidden">
+      <h3 class="section-title">NEW POST</h3>
+      <div class="post-form">
+        <label class="small">CATEGORY</label>
+        <select id="postCategory">
+          <option value="majestic">MAJESTIC☆MAJOLICAL</option>
+          <option value="hazbin">HAZBIN HOTEL</option>
+          <option value="pokemon">POKÉMON</option>
+        </select>
+
+        <label class="small">TEXT</label>
+        <textarea id="postBody" placeholder="ここに投稿を書く..."></textarea>
+
+        <label class="small">IMAGE</label>
+        <input type="file" id="postImage" accept="image/*">
+
+        <button class="action primary" id="submitPost">POST</button>
+      </div>
+    </section>
+
+    <h3 class="section-title" id="feedTitle">POSTS</h3>
+    <div id="feed"></div>
+    <div id="messageFeed" class="small"></div>
+  </section>
+</main>
+
+<footer>NOIR ROUGE — PRIVATE COLLECTION</footer>
+
+<script>
+(() => {
+  const CONFIG = window.SUPABASE_CONFIG || {};
+  const SUPABASE_URL = CONFIG.url;
+  const SUPABASE_KEY = CONFIG.key;
+
+  const ADMIN_UID = "cc01075a-2c8e-49df-a4f4-fff8a101720e";
+  const VIEWER_EMAIL = "charakawaii@gmail.com";
+  const BUCKET = "site-media";
+
+  const names = {
+    all: "POSTS",
+    majestic: "MAJESTIC☆MAJOLICAL",
+    hazbin: "HAZBIN HOTEL",
+    pokemon: "POKÉMON"
+  };
+
+  const $ = id => document.getElementById(id);
+
+  let supabaseClient = null;
+  let currentUser = null;
+  let isAdmin = false;
+  let selected = "all";
+  let posts = [];
+
+  function message(text) {
+    $("message").textContent = text;
+  }
+
+  function feedMessage(text) {
+    $("messageFeed").textContent = text;
+  }
+
+  function init() {
+    if (!SUPABASE_URL || !SUPABASE_KEY) {
+      message("config.js にSupabaseのURLと公開キーを設定してください。");
+      return;
+    }
+
+    if (!window.supabase || !window.supabase.createClient) {
+      message("Supabaseの読み込みに失敗しました。ページを再読み込みしてください。");
+      return;
+    }
+
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    $("viewerLogin").addEventListener("click", viewerLogin);
+    $("adminLogin").addEventListener("click", adminLogin);
+    $("logout").addEventListener("click", logout);
+    $("submitPost").addEventListener("click", submitPost);
+
+    document.querySelectorAll("[data-cat]").forEach(button => {
+      button.addEventListener("click", () => {
+        selected = button.dataset.cat;
+        updateCategory();
+      });
+    });
+
+    supabaseClient.auth.getSession().then(({data, error}) => {
+      if (error) {
+        message(error.message);
+        return;
+      }
+
+      if (data.session) {
+        verifySession(data.session.user);
+      }
+    });
+  }
+
+  async function viewerLogin() {
+    const password = $("viewerPassword").value;
+
+    if (!password) {
+      message("パスワードを入力してください。");
+      return;
+    }
+
+    message("ログインしています...");
+
+    const {data, error} = await supabaseClient.auth.signInWithPassword({
+      email: VIEWER_EMAIL,
+      password
+    });
+
+    if (error) {
+      message("ログインできませんでした。パスワードを確認してください。");
+      return;
+    }
+
+    await verifySession(data.user);
+  }
+
+  async function adminLogin() {
+    const email = $("adminEmail").value.trim();
+    const password = $("adminPassword").value;
+
+    if (!email || !password) {
+      message("管理者メールアドレスとパスワードを入力してください。");
+      return;
+    }
+
+    message("管理者ログインしています...");
+
+    const {data, error} = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      message("ログインできませんでした。入力内容を確認してください。");
+      return;
+    }
+
+    if (data.user.id !== ADMIN_UID) {
+      await supabaseClient.auth.signOut();
+      message("このアカウントには管理者権限がありません。");
+      return;
+    }
+
+    await verifySession(data.user);
+  }
+
+  async function verifySession(user) {
+    if (!user) return;
+
+    currentUser = user;
+    isAdmin = user.id === ADMIN_UID;
+
+    $("loginArea").classList.add("hidden");
+    $("siteArea").classList.remove("hidden");
+    $("adminArea").classList.toggle("hidden", !isAdmin);
+
+    $("loginStatus").textContent =
+      isAdmin ? "ADMIN MODE" : "VIEWER MODE";
+
+    await loadPosts();
+  }
+
+  async function logout() {
+    const {error} = await supabaseClient.auth.signOut();
+
+    if (error) {
+      message(error.message);
+      return;
+    }
+
+    currentUser = null;
+    isAdmin = false;
+    posts = [];
+
+    $("siteArea").classList.add("hidden");
+    $("loginArea").classList.remove("hidden");
+    $("viewerPassword").value = "";
+    $("adminPassword").value = "";
+    message("ログアウトしました。");
+  }
+
+  function updateCategory() {
+    document.body.classList.toggle(
+      "pokemon-page",
+      selected === "pokemon"
+    );
+
+    document.querySelectorAll("[data-cat]").forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.cat === selected
+      );
+    });
+
+    const hero = $("hero");
+
+    if (selected === "all") {
+      hero.innerHTML = `
+        <div class="hero-small">WELCOME TO MY WORLD</div>
+        <h2>NOIR ROUGE</h2>
+        <p>物語の扉を選んでください。</p>
+      `;
+    } else if (selected === "pokemon") {
+      hero.innerHTML = `
+        <div class="hero-small">✧ FOREST · TRUTH · IDEALS ✧</div>
+        <h2>Pokémon</h2>
+        <p>N × アスカ</p>
+        <p>Truth, Ideals and a World of Dreams.</p>
+      `;
+    } else if (selected === "majestic") {
+      hero.innerHTML = `
+        <div class="hero-small">A PRIVATE STORY</div>
+        <h2>MAJESTIC☆MAJOLICAL</h2>
+        <p>Shell Celestite × ミア</p>
+      `;
+    } else {
+      hero.innerHTML = `
+        <div class="hero-small">A PRIVATE STORY</div>
+        <h2>HAZBIN HOTEL</h2>
+        <p>Angel Dust × ルナ</p>
+      `;
+    }
+
+    $("feedTitle").textContent =
+      selected === "all" ? "POSTS" : names[selected];
+
+    renderPosts();
+  }
+
+  async function loadPosts() {
+    feedMessage("読み込み中...");
+
+    const {data, error} = await supabaseClient
+      .from("posts")
+      .select("*")
+      .order("created_at", {ascending: false});
+
+    if (error) {
+      feedMessage("投稿を読み込めませんでした: " + error.message);
+      return;
+    }
+
+    posts = data || [];
+    await renderPosts();
+  }
+
+  async function renderPosts() {
+    const feed = $("feed");
+    feed.innerHTML = "";
+
+    const visiblePosts = posts.filter(post => {
+      return selected === "all" || post.category === selected;
+    });
+
+    if (visiblePosts.length === 0) {
+      feed.innerHTML = '<p class="small">まだ投稿はありません。</p>';
+      feedMessage("");
+      return;
+    }
+
+    for (const post of visiblePosts) {
+      const article = document.createElement("article");
+      article.className = "post";
+
+      const category = names[post.category] || post.category;
+      const date = post.created_at
+        ? new Date(post.created_at).toLocaleString("ja-JP")
+        : "";
+
+      const meta = document.createElement("div");
+      meta.className = "post-meta";
+      meta.textContent = category + "　/　" + date;
+      article.appendChild(meta);
+
+      const body = document.createElement("div");
+      body.className = "post-body";
+      body.textContent = post.body || "";
+      article.appendChild(body);
+
+      if (post.image_url) {
+        const {data, error} = await supabaseClient.storage
+          .from(BUCKET)
+          .createSignedUrl(post.image_url, 3600);
+
+        if (!error && data && data.signedUrl) {
+          const img = document.createElement("img");
+          img.src = data.signedUrl;
+          img.alt = "投稿画像";
+          img.loading = "lazy";
+          article.appendChild(img);
+        }
+      }
+
+      if (isAdmin) {
+        const actions = document.createElement("div");
+        actions.className = "post-actions";
+
+        const edit = document.createElement("button");
+        edit.className = "action";
+        edit.textContent = "EDIT";
+        edit.addEventListener("click", () => editPost(post));
+
+        const remove = document.createElement("button");
+        remove.className = "action";
+        remove.textContent = "DELETE";
+        remove.addEventListener("click", () => deletePost(post));
+
+        actions.append(edit, remove);
+        article.appendChild(actions);
+      }
+
+      feed.appendChild(article);
+    }
+
+    feedMessage("");
+  }
+
+  async function submitPost() {
+    if (!isAdmin || !currentUser) {
+      message("管理者のみ投稿できます。");
+      return;
+    }
+
+    const category = $("postCategory").value;
+    const body = $("postBody").value.trim();
+    const file = $("postImage").files[0];
+
+    if (!body && !file) {
+      message("文章か画像を入力してください。");
+      return;
+    }
+
+    message("投稿しています...");
+
+    let imagePath = null;
+
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        message("画像ファイルを選択してください。");
+        return;
+      }
+
+      if (file.size > 8 * 1024 * 1024) {
+        message("画像は8MB以下にしてください。");
+        return;
+      }
+
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      imagePath = ADMIN_UID + "/" + Date.now() + "_" + safeName;
+
+      const {error: uploadError} = await supabaseClient.storage
+        .from(BUCKET)
+        .upload(imagePath, file, {
+          cacheControl: "3600",
+          upsert: false
+        });
+
+      if (uploadError) {
+        message("画像をアップロードできませんでした: " + uploadError.message);
+        return;
+      }
+    }
+
+    const {error} = await supabaseClient.from("posts").insert({
+      category,
+      body,
+      image_url: imagePath,
+      author_id: currentUser.id
+    });
+
+    if (error) {
+      if (imagePath) {
+        await supabaseClient.storage.from(BUCKET).remove([imagePath]);
+      }
+      message("投稿できませんでした: " + error.message);
+      return;
+    }
+
+    $("postBody").value = "";
+    $("postImage").value = "";
+    message("投稿しました。");
+
+    await loadPosts();
+  }
+
+  async function editPost(post) {
+    const newBody = prompt("投稿内容を編集してください。", post.body || "");
+
+    if (newBody === null) return;
+
+    const {error} = await supabaseClient
+      .from("posts")
+      .update({body: newBody})
+      .eq("id", post.id);
+
+    if (error) {
+      message("編集できませんでした: " + error.message);
+      return;
+    }
+
+    message("編集しました。");
+    await loadPosts();
+  }
+
+  async function deletePost(post) {
+    if (!confirm("この投稿を削除しますか？")) return;
+
+    const {error} = await supabaseClient
+      .from("posts")
+      .delete()
+      .eq("id", post.id);
+
+    if (error) {
+      message("削除できませんでした: " + error.message);
+      return;
+    }
+
+    if (post.image_url) {
+      await supabaseClient.storage
+        .from(BUCKET)
+        .remove([post.image_url]);
+    }
+
+    message("削除しました。");
+    await loadPosts();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
