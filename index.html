@@ -8,239 +8,617 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box}
-:root{--bg:#100b0e;--red:#8e172e;--gold:#c5a46a;--cream:#eee4d2}
-body{margin:0;background:var(--bg);color:var(--cream);font-family:Georgia,"Yu Mincho",serif}
-body.pokemon{--bg:#e9e8d9;--red:#174b39;--gold:#a58b4d;--cream:#202b24;color:var(--cream)}
-header{text-align:center;padding:45px 15px 25px;border-bottom:1px solid var(--gold)}
-h1{font-size:38px;letter-spacing:7px;color:var(--gold);margin:0}
-.subtitle{font-size:11px;letter-spacing:4px;margin-top:12px}
-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;padding:20px 10px}
-button{background:transparent;color:var(--gold);border:1px solid var(--gold);padding:10px 17px;font-family:inherit;cursor:pointer}
-button:hover{background:var(--gold);color:var(--bg)}
-main{max-width:760px;margin:30px auto;padding:0 18px}
-.hero{text-align:center;padding:65px 15px;border:1px solid var(--gold);margin-bottom:30px;background:linear-gradient(145deg,transparent,#5a182522)}
-.hero h2{font-size:30px;color:var(--gold);letter-spacing:3px}
-.hero p{line-height:2}
-.panel{border:1px solid var(--gold);padding:20px;margin:20px 0}
-input,textarea{width:100%;padding:12px;margin:8px 0;background:#21171b;color:white;border:1px solid var(--gold);font-family:inherit}
-textarea{min-height:110px}
-body.pokemon input,body.pokemon textarea{background:#f4f1e5;color:#202b24}
-.post{border-bottom:1px solid var(--gold);padding:22px 5px;line-height:1.9}
-.post img{max-width:100%;max-height:500px;display:block;margin:15px auto}
-.small{font-size:12px;opacity:.7}
+body{
+ margin:0;
+ background:#100b0e;
+ color:#e8ddce;
+ font-family:'Noto Serif JP',serif;
+ transition:background .4s,color .4s;
+}
+:root{
+ --bg:#100b0e;
+ --panel:#1b1116;
+ --text:#e8ddce;
+ --sub:#a99a8d;
+ --accent:#c5a46a;
+ --line:#71563d;
+ --shadow:0 15px 45px #0008;
+}
+body.hazbin{
+ --bg:#13090e;
+ --panel:#251019;
+ --text:#f0d9d8;
+ --sub:#c19a9b;
+ --accent:#d65b6b;
+ --line:#77303e;
+}
+body.pokemon{
+ --bg:#eae9df;
+ --panel:#f7f5eb;
+ --text:#243c30;
+ --sub:#64776a;
+ --accent:#a58b4d;
+ --line:#8d9c7f;
+ --shadow:0 12px 35px #33442b18;
+}
+body.majestic{
+ --bg:#17131f;
+ --panel:#252031;
+ --text:#eee5f5;
+ --sub:#bcb0cb;
+ --accent:#c4a9dc;
+ --line:#76658c;
+ --shadow:0 12px 35px #0006;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
 .hidden{display:none!important}
-footer{text-align:center;padding:35px;color:var(--gold);font-size:12px}
-#message{color:var(--gold);white-space:pre-wrap}
+
+/* 共通 */
+.topline{
+ height:4px;
+ background:linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+header{
+ text-align:center;
+ padding:48px 16px 30px;
+ border-bottom:1px solid var(--line);
+}
+.brand{
+ font-family:'Cormorant Garamond',serif;
+ font-size:clamp(34px,8vw,55px);
+ letter-spacing:9px;
+ color:var(--accent);
+}
+.tagline{
+ font-size:9px;
+ letter-spacing:5px;
+ color:var(--sub);
+ margin-top:10px;
+}
+main{
+ width:min(850px,92%);
+ margin:0 auto;
+ padding:35px 0 70px;
+}
+.eyebrow{
+ font-family:'Cormorant Garamond',serif;
+ letter-spacing:4px;
+ font-size:13px;
+ color:var(--accent);
+}
+h2,h3{
+ font-weight:400;
+}
+.goldline{
+ width:65px;
+ height:1px;
+ background:var(--accent);
+ margin:22px auto;
+}
+.btn{
+ border:1px solid var(--accent);
+ background:transparent;
+ color:var(--accent);
+ padding:12px 22px;
+ letter-spacing:2px;
+ font-size:11px;
+ transition:.25s;
+}
+.btn:hover{
+ background:var(--accent);
+ color:var(--bg);
+}
+.nav{
+ display:flex;
+ justify-content:center;
+ flex-wrap:wrap;
+ gap:10px;
+ padding:18px 10px;
+ border-bottom:1px solid var(--line);
+}
+.panel{
+ background:var(--panel);
+ border:1px solid var(--line);
+ padding:24px;
+ margin:25px 0;
+ box-shadow:var(--shadow);
+}
+input,textarea{
+ display:block;
+ width:100%;
+ padding:13px;
+ margin:12px 0;
+ background:var(--bg);
+ color:var(--text);
+ border:1px solid var(--line);
+ outline:none;
+}
+textarea{min-height:130px;resize:vertical}
+input:focus,textarea:focus{border-color:var(--accent)}
+.small{font-size:11px;color:var(--sub)}
+footer{
+ text-align:center;
+ border-top:1px solid var(--line);
+ padding:35px 10px;
+ color:var(--sub);
+ font-size:10px;
+ letter-spacing:3px;
+}
+
+/* トップページ */
+.home-hero{
+ min-height:390px;
+ padding:80px 20px;
+ text-align:center;
+ border:1px solid var(--line);
+ background:
+ linear-gradient(#130a0dcc,#130a0de8),
+ radial-gradient(ellipse at center,#68432d,#160d12 70%);
+ box-shadow:var(--shadow);
+}
+.home-hero h1{
+ font-family:'Cormorant Garamond',serif;
+ color:#d6b77b;
+ font-size:clamp(35px,8vw,65px);
+ font-weight:400;
+ letter-spacing:10px;
+}
+.home-hero p{
+ color:#c7b8a9;
+ line-height:2.4;
+ font-size:12px;
+}
+.collection{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:16px;
+ margin-top:35px;
+}
+.work-card{
+ min-height:190px;
+ border:1px solid var(--line);
+ padding:27px 15px;
+ text-align:center;
+ background:linear-gradient(145deg,#24151c,#120c10);
+ cursor:pointer;
+ transition:.3s;
+}
+.work-card:hover{
+ transform:translateY(-4px);
+ border-color:#d6b77b;
+}
+.work-card .name{
+ color:#d6b77b;
+ font-family:'Cormorant Garamond',serif;
+ letter-spacing:3px;
+ font-size:23px;
+}
+.work-card p{
+ font-size:11px;
+ color:#c2aaa1;
+ line-height:2;
+}
+
+/* 作品ページ */
+.work-hero{
+ text-align:center;
+ padding:75px 18px;
+ border:1px solid var(--line);
+ margin-bottom:35px;
+ position:relative;
+ overflow:hidden;
+}
+.work-hero:before{
+ content:"";
+ position:absolute;
+ inset:8px;
+ border:1px solid var(--line);
+ pointer-events:none;
+ opacity:.55;
+}
+.work-hero h2{
+ font-family:'Cormorant Garamond',serif;
+ font-size:clamp(32px,8vw,55px);
+ letter-spacing:5px;
+ color:var(--accent);
+ margin:16px 0;
+}
+.work-hero p{
+ font-size:12px;
+ line-height:2.4;
+ color:var(--sub);
+}
+.hazbin .work-hero{
+ background:radial-gradient(ellipse,#54202d,#170a10 75%);
+}
+.pokemon .work-hero{
+ background:linear-gradient(145deg,#e3e7d8,#f7f5e9 65%);
+}
+.majestic .work-hero{
+ background:radial-gradient(ellipse,#473853,#191421 75%);
+}
+.pokemon .work-hero h2{color:#315a43}
+.pokemon .work-hero p{color:#64776a}
+.hazbin .work-hero h2{color:#e16b79}
+.majestic .work-hero h2{color:#d0b4e9}
+
+/* 投稿 */
+.post{
+ padding:25px 5px;
+ border-bottom:1px solid var(--line);
+ line-height:2;
+}
+.post-date{
+ font-family:'Cormorant Garamond',serif;
+ color:var(--accent);
+ font-size:13px;
+}
+.post-body{
+ white-space:pre-wrap;
+ overflow-wrap:anywhere;
+ font-size:13px;
+}
+.post img{
+ display:block;
+ width:auto;
+ max-width:100%;
+ max-height:520px;
+ margin:20px auto;
+ border:1px solid var(--line);
+}
+.post-actions{
+ display:flex;
+ gap:10px;
+ margin-top:12px;
+}
+.message{
+ color:var(--accent);
+ font-size:12px;
+ white-space:pre-wrap;
+}
+@media(max-width:520px){
+ .collection{grid-template-columns:1fr}
+ .home-hero{padding:65px 15px}
+ header{padding-top:35px}
+ .panel{padding:17px}
+}
 </style>
 </head>
 
 <body>
+<div class="topline"></div>
+
 <header>
-<h1>NOIR ROUGE</h1>
-<div class="subtitle">PRIVATE DREAM FICTION ARCHIVE</div>
+ <div class="brand">NOIR ROUGE</div>
+ <div class="tagline">THE PRIVATE DREAM ARCHIVE</div>
 </header>
 
-<nav>
-<button onclick="showPage('majestic')">MAJESTIC</button>
-<button onclick="showPage('hazbin')">HAZBIN HOTEL</button>
-<button onclick="showPage('pokemon')">POKÉMON</button>
+<nav class="nav">
+ <button class="btn" onclick="goHome()">HOME</button>
+ <button class="btn" onclick="showPage('hazbin')">HAZBIN HOTEL</button>
+ <button class="btn" onclick="showPage('pokemon')">POKÉMON</button>
+ <button class="btn" onclick="showPage('majestic')">MAJESTIC</button>
 </nav>
 
 <main>
-<section id="home" class="hero">
-<h2>Welcome to my archive</h2>
-<p>ここは、夢と物語を綴る秘密の書庫。<br>どうぞ、ごゆっくりお楽しみください。</p>
-<p class="small">NOIR ROUGE — operated by 望月</p>
+
+<section id="home">
+ <div class="home-hero">
+  <div class="eyebrow">WELCOME TO MY PRIVATE ARCHIVE</div>
+  <h1>NOIR ROUGE</h1>
+  <div class="goldline"></div>
+  <p>
+   扉の向こうには、誰にも邪魔されない物語がある。<br>
+   ここは、夢と記憶をしまっておく小さな洋館。
+  </p>
+  <div class="eyebrow">EST. BY MOCHIZUKI</div>
+ </div>
+
+ <div style="text-align:center;margin-top:45px">
+  <div class="eyebrow">SELECT YOUR WORLD</div>
+  <h2 style="letter-spacing:4px">THE COLLECTION</h2>
+  <div class="goldline"></div>
+ </div>
+
+ <div class="collection">
+  <div class="work-card" onclick="showPage('hazbin')">
+   <div class="eyebrow">01 / HELL</div>
+   <div class="name">HAZBIN HOTEL</div>
+   <p>Angel Dust × ルナ<br>薔薇色の悪夢と甘い毒。</p>
+   <span class="small">ENTER THE ROOM →</span>
+  </div>
+
+  <div class="work-card" onclick="showPage('pokemon')">
+   <div class="eyebrow">02 / FOREST</div>
+   <div class="name">POKÉMON</div>
+   <p>N × アスカ<br>緑の森に隠された物語。</p>
+   <span class="small">ENTER THE ROOM →</span>
+  </div>
+
+  <div class="work-card" onclick="showPage('majestic')">
+   <div class="eyebrow">03 / MAGIC</div>
+   <div class="name">MAJESTIC</div>
+   <p>Shell Celestite × ミア<br>宝石と魔法の小部屋。</p>
+   <span class="small">ENTER THE ROOM →</span>
+  </div>
+ </div>
 </section>
 
-<section id="login" class="panel">
-<h2>ENTRANCE</h2>
-<p>合言葉を知る方のみ、お入りいただけます。</p>
-<input id="loginPassword" type="password" placeholder="合言葉">
-<button onclick="viewerLogin()">ENTER</button>
-<p id="message"></p>
+<section id="login" class="hidden">
+ <div class="panel" style="text-align:center">
+  <div class="eyebrow">PRIVATE ENTRANCE</div>
+  <h2>THE LOCKED DOOR</h2>
+  <div class="goldline"></div>
+  <p class="small">この書庫は招待された方のみ閲覧できます。</p>
+  <input id="loginPassword" type="password" placeholder="PASSWORD">
+  <button class="btn" onclick="viewerLogin()">UNLOCK</button>
+  <p id="loginMessage" class="message"></p>
+ </div>
 </section>
 
 <section id="archive" class="hidden">
-<div class="hero">
-<p class="small" id="workLabel"></p>
-<h2 id="workTitle"></h2>
-<p id="workDescription"></p>
-</div>
+ <div class="work-hero">
+  <div class="eyebrow" id="workLabel"></div>
+  <h2 id="workTitle"></h2>
+  <div class="goldline"></div>
+  <p id="workDescription"></p>
+  <button class="btn" onclick="goHome()">BACK TO HOME</button>
+ </div>
 
-<div id="adminLogin" class="panel">
-<h3>OWNER LOGIN</h3>
-<input id="adminEmail" type="email" placeholder="管理者メールアドレス">
-<input id="adminPassword" type="password" placeholder="管理者パスワード">
-<button onclick="adminLogin()">LOGIN</button>
-<p id="adminMessage"></p>
-</div>
+ <section id="adminLogin" class="panel">
+  <div class="eyebrow">OWNER'S ROOM</div>
+  <h3>ADMIN LOGIN</h3>
+  <input id="adminEmail" type="email" placeholder="EMAIL">
+  <input id="adminPassword" type="password" placeholder="PASSWORD">
+  <button class="btn" onclick="adminLogin()">LOGIN</button>
+  <p id="adminMessage" class="message"></p>
+ </section>
 
-<div id="postForm" class="panel hidden">
-<h3>NEW POST</h3>
-<textarea id="postBody" placeholder="物語や日記を書く..."></textarea>
-<input id="postImage" type="file" accept="image/*">
-<button onclick="createPost()">POST</button>
-<button onclick="logout()">LOGOUT</button>
-<p id="postMessage"></p>
-</div>
+ <section id="postForm" class="panel hidden">
+  <div class="eyebrow">PRIVATE JOURNAL</div>
+  <h3>NEW ENTRY</h3>
+  <textarea id="postBody" placeholder="ここに物語を綴る..."></textarea>
+  <input id="postImage" type="file" accept="image/*">
+  <button class="btn" onclick="createPost()">PUBLISH</button>
+  <button class="btn" onclick="logout()">LOGOUT</button>
+  <p id="postMessage" class="message"></p>
+ </section>
 
-<div id="posts"></div>
+ <div style="text-align:center;margin:40px 0 15px">
+  <div class="eyebrow">THE JOURNAL</div>
+  <h3 style="letter-spacing:4px">STORIES & MEMORIES</h3>
+ </div>
+ <div id="posts"></div>
 </section>
+
 </main>
 
-<footer>© NOIR ROUGE / 望月</footer>
+<footer>
+ NOIR ROUGE<br>
+ <span style="display:block;margin-top:10px">A PRIVATE WORLD BY MOCHIZUKI</span>
+</footer>
 
 <script>
-const ADMIN_UID = "cc01075a-2c8e-49df-a4f4-fff8a101720e";
-const VIEWER_EMAIL = "charakawaii508@gmail.com";
-const BUCKET = "site-media";
+const ADMIN_UID="cc01075a-2c8e-49df-a4f4-fff8a101720e";
+const VIEWER_EMAIL="charakawaii508@gmail.com";
+const BUCKET="site-media";
 
-const works = {
- majestic:{
-  label:"MAJESTIC☆MAJOLICAL",
-  title:"Shell Celestite",
-  description:"Shell Celestite × ミア",
-  theme:""
- },
+const works={
  hazbin:{
-  label:"HAZBIN HOTEL",
-  title:"ANGEL DUST",
+  label:"THE WORLD OF HAZBIN HOTEL",
+  title:"A LITTLE SLICE OF HELL",
   description:"Angel Dust × ルナ",
-  theme:""
+  theme:"hazbin"
  },
  pokemon:{
-  label:"POKÉMON",
-  title:"N",
-  description:"N × アスカ — どこまでも続く、緑の夢。",
+  label:"THE WORLD OF POKÉMON",
+  title:"THE GREEN GARDEN",
+  description:"N × アスカ",
   theme:"pokemon"
+ },
+ majestic:{
+  label:"THE WORLD OF MAJESTIC☆MAJOLICAL",
+  title:"THE JEWEL BOX",
+  description:"Shell Celestite × ミア",
+  theme:"majestic"
  }
 };
 
-let db;
-let currentCategory="majestic";
+let db=null;
+let currentCategory="hazbin";
 let isAdmin=false;
+let loggedIn=false;
 
-function showMessage(id,msg){
- document.getElementById(id).textContent=msg;
+function msg(id,text){
+ document.getElementById(id).textContent=text;
+}
+
+function goHome(){
+ document.body.className="";
+ document.getElementById("home").classList.remove("hidden");
+ document.getElementById("login").classList.add("hidden");
+ document.getElementById("archive").classList.add("hidden");
 }
 
 function showPage(category){
  currentCategory=category;
  document.body.className=works[category].theme;
  document.getElementById("home").classList.add("hidden");
- document.getElementById("login").classList.remove("hidden");
- document.getElementById("archive").classList.add("hidden");
  document.getElementById("workLabel").textContent=works[category].label;
  document.getElementById("workTitle").textContent=works[category].title;
  document.getElementById("workDescription").textContent=works[category].description;
- document.getElementById("posts").innerHTML="";
+
+ if(loggedIn){
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("archive").classList.remove("hidden");
+  loadPosts();
+ }else{
+  document.getElementById("archive").classList.add("hidden");
+  document.getElementById("login").classList.remove("hidden");
+ }
 }
 
 function openArchive(){
+ loggedIn=true;
  document.getElementById("login").classList.add("hidden");
  document.getElementById("archive").classList.remove("hidden");
  loadPosts();
 }
 
 async function viewerLogin(){
+ if(!db){msg("loginMessage","設定が読み込めません。config.jsを確認してください。");return;}
  const password=document.getElementById("loginPassword").value;
- if(!db){showMessage("message","設定を確認してください。");return;}
- const {error}=await db.auth.signInWithPassword({
+ const {data,error}=await db.auth.signInWithPassword({
   email:VIEWER_EMAIL,
   password:password
  });
- if(error){showMessage("message","合言葉が違うか、ログインできません。");return;}
- isAdmin=false;
+ if(error){
+  msg("loginMessage","ログインできませんでした。メールアドレスとパスワードを確認してください。");
+  return;
+ }
+ isAdmin=data.user.id===ADMIN_UID;
+ if(isAdmin)showAdmin();
  openArchive();
+}
+
+function showAdmin(){
+ document.getElementById("postForm").classList.remove("hidden");
+ document.getElementById("adminLogin").classList.add("hidden");
 }
 
 async function adminLogin(){
  const email=document.getElementById("adminEmail").value;
  const password=document.getElementById("adminPassword").value;
  const {data,error}=await db.auth.signInWithPassword({email,password});
- if(error){showMessage("adminMessage","ログインできませんでした。");return;}
+ if(error){
+  msg("adminMessage","ログインできませんでした。");
+  return;
+ }
  if(data.user.id!==ADMIN_UID){
   await db.auth.signOut();
-  showMessage("adminMessage","管理者アカウントではありません。");
+  msg("adminMessage","管理者アカウントではありません。");
   return;
  }
  isAdmin=true;
- document.getElementById("postForm").classList.remove("hidden");
- document.getElementById("adminLogin").classList.add("hidden");
+ showAdmin();
  loadPosts();
 }
 
 async function createPost(){
  const body=document.getElementById("postBody").value.trim();
  const file=document.getElementById("postImage").files[0];
- if(!body&&!file){showMessage("postMessage","文章か画像を入力してください。");return;}
+ if(!body&&!file){
+  msg("postMessage","文章か画像を入力してください。");
+  return;
+ }
+
  const {data:{user}}=await db.auth.getUser();
+ if(!user||user.id!==ADMIN_UID){
+  msg("postMessage","管理者ログインが必要です。");
+  return;
+ }
+
  let imagePath=null;
  if(file){
   const safeName=Date.now()+"_"+file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
   const path=user.id+"/"+safeName;
   const {error}=await db.storage.from(BUCKET).upload(path,file);
-  if(error){showMessage("postMessage","画像のアップロードに失敗しました。");return;}
+  if(error){
+   msg("postMessage","画像をアップロードできませんでした。");
+   return;
+  }
   imagePath=path;
  }
+
  const {error}=await db.from("posts").insert({
   category:currentCategory,
   body:body,
   image_url:imagePath,
   author_id:user.id
  });
- if(error){showMessage("postMessage","投稿できませんでした: "+error.message);return;}
+
+ if(error){
+  msg("postMessage","投稿エラー: "+error.message);
+  return;
+ }
  document.getElementById("postBody").value="";
  document.getElementById("postImage").value="";
- showMessage("postMessage","投稿しました。");
+ msg("postMessage","投稿しました。");
  loadPosts();
 }
 
 async function loadPosts(){
+ const area=document.getElementById("posts");
+ area.innerHTML="";
  const {data,error}=await db.from("posts")
   .select("*")
   .eq("category",currentCategory)
   .order("created_at",{ascending:false});
- const area=document.getElementById("posts");
- area.innerHTML="";
- if(error){area.textContent="投稿を読み込めませんでした。";return;}
+
+ if(error){
+  area.textContent="投稿を読み込めませんでした。";
+  return;
+ }
+
  for(const post of data||[]){
   const article=document.createElement("article");
   article.className="post";
+
   const date=document.createElement("div");
-  date.className="small";
+  date.className="post-date";
   date.textContent=new Date(post.created_at).toLocaleString("ja-JP");
-  const content=document.createElement("p");
-  content.textContent=post.body||"";
-  article.append(date,content);
+
+  const body=document.createElement("p");
+  body.className="post-body";
+  body.textContent=post.body||"";
+
+  article.append(date,body);
+
   if(post.image_url){
    const {data:imageData}=await db.storage.from(BUCKET).createSignedUrl(post.image_url,3600);
    if(imageData?.signedUrl){
     const img=document.createElement("img");
     img.src=imageData.signedUrl;
+    img.alt="投稿画像";
     article.appendChild(img);
    }
   }
+
   if(isAdmin){
+   const actions=document.createElement("div");
+   actions.className="post-actions";
+
    const edit=document.createElement("button");
+   edit.className="btn";
    edit.textContent="EDIT";
    edit.onclick=()=>editPost(post);
+
    const del=document.createElement("button");
+   del.className="btn";
    del.textContent="DELETE";
    del.onclick=()=>deletePost(post);
-   article.append(edit,del);
+
+   actions.append(edit,del);
+   article.appendChild(actions);
   }
+
   area.appendChild(article);
  }
 }
 
 async function editPost(post){
- const updated=prompt("投稿内容を編集",post.body||"");
+ const updated=prompt("投稿内容を編集してください",post.body||"");
  if(updated===null)return;
- const {error}=await db.from("posts").update({body:updated}).eq("id",post.id);
+ const {error}=await db.from("posts")
+  .update({body:updated})
+  .eq("id",post.id);
  if(error){alert("編集できませんでした。");return;}
  loadPosts();
 }
@@ -257,28 +635,30 @@ async function deletePost(post){
 
 async function logout(){
  await db.auth.signOut();
+ loggedIn=false;
  isAdmin=false;
  document.getElementById("postForm").classList.add("hidden");
  document.getElementById("adminLogin").classList.remove("hidden");
- document.getElementById("archive").classList.add("hidden");
+ document.getElementById("loginPassword").value="";
  document.getElementById("login").classList.remove("hidden");
+ document.getElementById("archive").classList.add("hidden");
 }
 
 async function init(){
  const config=window.SUPABASE_CONFIG;
- if(!config?.url||!config?.key){
-  showMessage("message","config.jsの設定を確認してください。");
+ if(!config||!config.url||!config.key){
+  msg("loginMessage","config.jsのURLとPublishable Keyを確認してください。");
   return;
  }
  db=window.supabase.createClient(config.url,config.key);
+
  const {data:{session}}=await db.auth.getSession();
  if(session){
   const {data:{user}}=await db.auth.getUser();
-  if(user?.id===ADMIN_UID){
-   isAdmin=true;
-   openArchive();
-   document.getElementById("postForm").classList.remove("hidden");
-   document.getElementById("adminLogin").classList.add("hidden");
+  if(user){
+   loggedIn=true;
+   isAdmin=user.id===ADMIN_UID;
+   if(isAdmin)showAdmin();
   }
  }
 }
