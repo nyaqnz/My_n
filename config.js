@@ -1,2 +1,4 @@
-export const SUPABASE_URL = "https://zxvsgsbzyvfacazqoazh.supabase.co/rest/v1/";
-export const SUPABASE_ANON_KEY = "https://zxvsgsbzyvfacazqoazh.supabase.co/rest/v1/";
+window.SUPABASE_CONFIG = {
+  url: "https://zxvsgsbzyvfacazqoazh.supabase.co",
+  key: "sb_publishable_7sLBK975AXByqilb6XSLvQ_snjUPanh"
+};
