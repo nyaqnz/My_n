@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120b10">
+<meta name="description" content="NOIR ROUGE — private dream archive">
+<title>NOIR ROUGE | 望月</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#100b10;--panel:#1b1118;--panel2:#24151e;--red:#8d263e;--red2:#c04b61;--gold:#c6a66b;--cream:#f2e8dc;--muted:#b6a5a8;--line:#55313c;--shadow:0 18px 55px #0008}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#512033 0,#1b1019 34%,var(--bg) 72%);color:var(--cream);font-family:"Noto Serif JP",serif;min-height:100vh}button,input,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}.wrap{width:min(1080px,calc(100% - 32px));margin:auto}.topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid #ffffff18}.brand{font:600 25px "Cormorant Garamond",serif;letter-spacing:.2em;color:var(--gold)}.brand small{display:block;font:10px "Noto Serif JP";letter-spacing:.28em;color:var(--muted);margin-top:3px}.top-actions{display:flex;gap:8px;align-items:center}.tiny{font-size:11px;color:var(--muted)}.btn{border:1px solid var(--gold);background:transparent;color:var(--gold);padding:10px 15px;border-radius:2px;font-size:12px;letter-spacing:.08em}.btn.primary{background:linear-gradient(120deg,#702039,#a3334d);border-color:#bd6474;color:#fff}.btn.danger{border-color:#8c4554;color:#e4a8b1}.btn:disabled{opacity:.45;cursor:wait}.login-shell{min-height:78vh;display:grid;place-items:center;padding:36px 0}.login-card{width:min(430px,100%);background:linear-gradient(145deg,#24151f,#130d13);border:1px solid var(--line);box-shadow:var(--shadow);padding:34px 26px;text-align:center}.eyebrow{font:12px "Cormorant Garamond";letter-spacing:.3em;color:var(--gold)}h1,h2,h3,p{margin-top:0}.login-card h1{font:500 34px "Cormorant Garamond";letter-spacing:.18em;margin:12px 0 6px}.login-card p{font-size:12px;color:var(--muted);line-height:1.9}.field{display:grid;gap:7px;text-align:left;margin:14px 0}.field label{font-size:11px;color:var(--gold);letter-spacing:.12em}.field input,.field textarea{width:100%;border:1px solid #68404a;background:#100b10;color:var(--cream);padding:12px;border-radius:2px;outline:none}.field textarea{min-height:110px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--gold)}.notice{font-size:12px;color:#e8a9b2;min-height:1.5em;margin-top:10px}.intro{padding:36px 0 22px;text-align:center}.intro h1{font:500 clamp(34px,7vw,58px) "Cormorant Garamond";letter-spacing:.22em;margin:0;color:var(--cream)}.intro p{color:var(--muted);font-size:11px;letter-spacing:.18em;margin:8px 0 0}.nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:18px 0 26px}.nav button{background:#1c1119;border:1px solid var(--line);color:var(--cream);padding:11px 17px;min-width:100px;font-size:12px;letter-spacing:.12em}.nav button.active{background:linear-gradient(120deg,#672039,#922b45);border-color:var(--gold);color:#fff}.page{display:none;animation:fade .35s ease}.page.active{display:block}@keyframes fade{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}.hero{position:relative;min-height:330px;height:42vw;max-height:470px;overflow:hidden;border:1px solid #71404b;background:linear-gradient(120deg,#321725,#130e14);box-shadow:var(--shadow);display:flex;align-items:end}.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.68}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#10090df2 0%,#10090d66 52%,#10090d18 100%)}.hero-copy{position:relative;z-index:1;padding:28px;width:100%}.hero-copy .eyebrow{font-size:13px}.hero-copy h2{font:500 clamp(30px,6vw,52px) "Cormorant Garamond";letter-spacing:.1em;margin:8px 0}.hero-copy p{font-size:12px;color:#f0dfe0;margin:0;letter-spacing:.08em}.section-head{display:flex;justify-content:space-between;align-items:end;margin:30px 0 15px;border-bottom:1px solid var(--line);padding-bottom:12px}.section-head h3{font:500 24px "Cormorant Garamond";letter-spacing:.12em;margin:0}.section-head span{font-size:10px;color:var(--muted);letter-spacing:.1em}.post-list{display:grid;gap:14px;margin-bottom:34px}.post{background:linear-gradient(140deg,#21141d,#171018);border:1px solid #492b35;padding:18px;box-shadow:0 8px 24px #0003}.post-meta{display:flex;justify-content:space-between;gap:12px;color:var(--gold);font-size:10px;letter-spacing:.1em;margin-bottom:10px}.post-body{white-space:pre-wrap;line-height:1.9;font-size:13px;overflow-wrap:anywhere}.post img{display:block;width:100%;max-height:520px;object-fit:contain;background:#0b080b;margin-top:14px}.post-tools{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}.empty{border:1px dashed #67404b;padding:30px;text-align:center;color:var(--muted);font-size:12px}.admin{background:#1b1118;border:1px solid var(--gold);padding:18px;margin:28px 0 36px}.admin h3{font:500 22px "Cormorant Garamond";color:var(--gold);margin-bottom:5px}.admin p{font-size:11px;color:var(--muted);line-height:1.7}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.admin .wide{grid-column:1/-1}.file-label{display:inline-block;border:1px dashed var(--gold);padding:12px;color:var(--gold);font-size:11px;width:100%;text-align:center}.file-label input{display:none}.footer{text-align:center;padding:32px 0 46px;color:#8e777e;font:12px "Cormorant Garamond";letter-spacing:.25em}.ornament{color:var(--gold);letter-spacing:.7em;margin:12px 0}.small-help{font-size:10px!important;color:#a88f96!important}.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#2a1822;border:1px solid var(--gold);padding:12px 18px;z-index:10;font-size:12px;box-shadow:var(--shadow);max-width:90vw}
+@media(max-width:640px){.wrap{width:min(100% - 22px,560px)}.topbar{padding:16px 0}.brand{font-size:21px}.intro{padding:27px 0 12px}.nav{gap:7px;padding:14px 0 20px}.nav button{flex:1;min-width:0;padding:12px 7px;font-size:11px}.hero{height:72vw;min-height:260px;max-height:390px}.hero-copy{padding:20px}.admin-grid{grid-template-columns:1fr}.admin .wide{grid-column:auto}.section-head{margin-top:24px}.login-card{padding:28px 20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar">
+    <div class="brand">NOIR ROUGE<small>PRIVATE DREAM ARCHIVE</small></div>
+    <div class="top-actions"><span id="userLabel" class="tiny"></span><button id="logoutBtn" class="btn hidden">LOG OUT</button></div>
+  </header>
+
+  <main id="loginView" class="login-shell">
+    <section class="login-card">
+      <div class="eyebrow">✦ PRIVATE COLLECTION ✦</div>
+      <h1>NOIR ROUGE</h1>
+      <p>ここは、望月のための小さな夢の書庫。<br>招待されたアカウントでログインしてください。</p>
+      <form id="loginForm">
+        <div class="field"><label for="email">EMAIL</label><input id="email" type="email" autocomplete="username" required placeholder="メールアドレス"></div>
+        <div class="field"><label for="password">PASSWORD</label><input id="password" type="password" autocomplete="current-password" required placeholder="パスワード"></div>
+        <button class="btn primary" style="width:100%;margin-top:8px" type="submit">ENTER THE ARCHIVE</button>
+      </form>
+      <div id="loginMessage" class="notice" role="status"></div>
+      <p class="small-help">アカウントを持っていない場合は、サイト管理者に招待を依頼してください。</p>
+    </section>
+  </main>
+
+  <main id="siteView" class="hidden">
+    <section class="intro"><div class="eyebrow">A PRIVATE WORLD BY MOCHIZUKI</div><h1>NOIR ROUGE</h1><p>THREE WORLDS · THREE STORIES · ONE DREAMER</p><div class="ornament">✦ ─── ♡ ─── ✦</div></section>
+    <nav class="nav" aria-label="夢ページ">
+      <button class="active" data-page="majestic">☆ MAJESTIC</button>
+      <button data-page="hazbin">♡ HAZBIN</button>
+      <button data-page="pokemon">○ POKÉMON</button>
+    </nav>
+
+    <section id="majestic" class="page active" data-title="マジェスティック☆マジョリカル">
+      <div class="hero" id="hero-majestic"><img class="hero-img hidden" alt="マジェスティック☆マジョリカルのメイン画像"><div class="hero-copy"><div class="eyebrow">☆ MAJESTIC ☆ MAJORICAL</div><h2>Shell Celestite</h2><p>シェル・セレスタイト × ミア</p></div></div>
+      <div class="section-head"><h3>MIА'S DREAM DIARY</h3><span>☆ SHELL CELESTITE</span></div>
+      <div class="post-list" id="posts-majestic"></div>
+    </section>
+
+    <section id="hazbin" class="page" data-title="ハズビン・ホテル">
+      <div class="hero" id="hero-hazbin"><img class="hero-img hidden" alt="ハズビン・ホテルのメイン画像"><div class="hero-copy"><div class="eyebrow">♡ HAZBIN HOTEL ♡</div><h2>Angel Dust</h2><p>エンジェル・ダスト × ルナ</p></div></div>
+      <div class="section-head"><h3>LUNA'S DREAM DIARY</h3><span>♡ ANGEL DUST</span></div>
+      <div class="post-list" id="posts-hazbin"></div>
+    </section>
+
+    <section id="pokemon" class="page" data-title="ポケモン">
+      <div class="hero" id="hero-pokemon"><img class="hero-img hidden" alt="ポケモンのメイン画像"><div class="hero-copy"><div class="eyebrow">○ POKÉMON ○</div><h2>N</h2><p>N × アスカ</p></div></div>
+      <div class="section-head"><h3>ASUKA'S DREAM DIARY</h3><span>○ N</span></div>
+      <div class="post-list" id="posts-pokemon"></div>
+    </section>
+
+    <section id="adminPanel" class="admin hidden">
+      <h3>THE OWNER'S DESK</h3>
+      <p>管理者としてログイン中です。文章・画像の投稿、投稿の編集と削除、各ページのメイン画像変更ができます。</p>
+      <div class="field"><label for="postPage">POST TO</label><select id="postPage" style="width:100%;padding:12px;background:#100b10;color:#f2e8dc;border:1px solid #68404a"><option value="majestic">☆ マジェスティック☆マジョリカル — シェル × ミア</option><option value="hazbin">♡ ハズビン・ホテル — エンジェル × ルナ</option><option value="pokemon">○ ポケモン — N × アスカ</option></select></div>
+      <div class="field"><label for="postText">TEXT</label><textarea id="postText" placeholder="夢日記やお知らせを書いてね…"></textarea></div>
+      <div class="field"><label>IMAGE (OPTIONAL)</label><label class="file-label">画像を選択<input id="postImage" type="file" accept="image/*"></label><span id="postFileName" class="tiny"></span></div>
+      <button id="publishBtn" class="btn primary">PUBLISH POST</button>
+      <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      <h3>HERO IMAGE SETTINGS</h3>
+      <p>各ページの一番上に表示するメイン画像を個別に設定できます。</p>
+      <div class="admin-grid">
+        <div class="field"><label>☆ MAJESTIC HERO</label><label class="file-label">画像を選択<input type="file" accept="image/*" data-hero="majestic"></label></div>
+        <div class="field"><label>♡ HAZBIN HERO</label><label class="file-label">画像を選択<input type="file" accept="image/*" data-hero="hazbin"></label></div>
+        <div class="field wide"><label>○ POKÉMON HERO</label><label class="file-label">画像を選択<input type="file" accept="image/*" data-hero="pokemon"></label></div>
+      </div>
+      <p class="small-help">画像はプライベートストレージに保存されます。大きな画像はアップロードに時間がかかることがあります。</p>
+    </section>
+  </main>
+  <footer class="footer">MOCHIZUKI <div class="ornament">✦ ♡ ✦</div><span class="tiny">NOIR ROUGE · PRIVATE DREAM ARCHIVE</span></footer>
+</div>
+<div id="toast" class="toast hidden" role="status"></div>
+<script src="./config.js"></script>
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => [...document.querySelectorAll(s)];
+  const cfg = window.NOIR_CONFIG || {};
+  const ready = cfg.url && cfg.anonKey && !cfg.url.includes("YOUR_") && !cfg.anonKey.includes("YOUR_");
+  let sb = null, currentUser = null, isOwner = false, editingId = null;
+  const pages = ["majestic","hazbin","pokemon"];
+  const pageNames = {majestic:"☆ MAJESTIC",hazbin:"♡ HAZBIN",pokemon:"○ POKÉMON"};
+  if (ready && window.supabase) sb = window.supabase.createClient(cfg.url,cfg.anonKey);
+
+  function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.remove("hidden");setTimeout(()=>el.classList.add("hidden"),3200)}
+  function showLogin(msg=""){ $("#loginView").classList.remove("hidden");$("#siteView").classList.add("hidden");$("#logoutBtn").classList.add("hidden");$("#loginMessage").textContent=msg; }
+  function showSite(){ $("#loginView").classList.add("hidden");$("#siteView").classList.remove("hidden");$("#logoutBtn").classList.remove("hidden");$("#userLabel").textContent=currentUser?.email||"";$("#adminPanel").classList.toggle("hidden",!isOwner); }
+  function safeText(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+  async function signed(path){if(!path)return null;const {data,error}=await sb.storage.from("site-media").createSignedUrl(path,3600);if(error){console.error(error);return null}return data.signedUrl}
+  async function loadHeroes(){
+    const {data,error}=await sb.from("site_settings").select("key,value").like("key","hero_%");
+    if(error){console.error(error);return}
+    for(const row of data||[]){const page=row.key.replace("hero_","");if(!pages.includes(page))continue;const url=await signed(row.value);const img=$(`#hero-${page} img`);if(url){img.src=url;img.classList.remove("hidden")}}
+  }
+  async function loadPosts(){
+    const {data,error}=await sb.from("posts").select("*").order("created_at",{ascending:false});
+    if(error){toast("投稿を読み込めませんでした");console.error(error);return}
+    for(const p of pages){const box=$(`#posts-${p}`);box.innerHTML="";const rows=(data||[]).filter(x=>x.page===p);
+      if(!rows.length){box.innerHTML='<div class="empty">まだ投稿はありません。<br>ここから物語を綴っていきましょう。</div>';continue}
+      for(const row of rows){const article=document.createElement("article");article.className="post";
+        const date=new Date(row.created_at).toLocaleString("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+        let imageHtml="";if(row.image_path){const url=await signed(row.image_path);if(url)imageHtml=`<img src="${url}" alt="投稿画像" loading="lazy">`}
+        article.innerHTML=`<div class="post-meta"><span>${pageNames[p]}</span><time>${date}</time></div><div class="post-body">${safeText(row.body)}</div>${imageHtml}`;
+        if(isOwner){const tools=document.createElement("div");tools.className="post-tools";const edit=document.createElement("button");edit.className="btn";edit.textContent="EDIT";edit.onclick=()=>beginEdit(row);const del=document.createElement("button");del.className="btn danger";del.textContent="DELETE";del.onclick=()=>deletePost(row);tools.append(edit,del);article.append(tools)}
+        box.append(article);
+      }
+    }
+  }
+  async function refresh(){await loadHeroes();await loadPosts()}
+  async function checkSession(){
+    if(!sb){showLogin("初期設定がまだです。READMEのSupabase設定を先に完了してください。");return}
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session){showLogin();return}
+    currentUser=session.user;isOwner=currentUser.email?.toLowerCase()===String(cfg.ownerEmail||"").toLowerCase();
+    showSite();await refresh();
+  }
+  $("#loginForm").addEventListener("submit",async e=>{e.preventDefault();if(!sb){showLogin("Supabaseの初期設定が必要です。READMEを確認してください。");return}
+    const {data,error}=await sb.auth.signInWithPassword({email:$("#email").value.trim(),password:$("#password").value});
+    if(error){$("#loginMessage").textContent="ログインできませんでした。メールアドレスとパスワードを確認してください。";return}
+    currentUser=data.user;isOwner=currentUser.email?.toLowerCase()===String(cfg.ownerEmail||"").toLowerCase();showSite();await refresh();
+  });
+  $("#logoutBtn").addEventListener("click",async()=>{await sb.auth.signOut();currentUser=null;isOwner=false;showLogin("ログアウトしました。")});
+  $$(".nav button").forEach(btn=>btn.addEventListener("click",()=>{$$(".nav button").forEach(x=>x.classList.toggle("active",x===btn));$$(".page").forEach(x=>x.classList.toggle("active",x.id===btn.dataset.page));}));
+  $("#postImage").addEventListener("change",e=>{$("#postFileName").textContent=e.target.files[0]?.name||""});
+  async function upload(file,folder){const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");const path=`${folder}/${crypto.randomUUID()}.${ext||"jpg"}`;const {error}=await sb.storage.from("site-media").upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type||"image/jpeg"});if(error)throw error;return path}
+  function beginEdit(row){editingId=row.id;$("#postPage").value=row.page;$("#postText").value=row.body;$("#publishBtn").textContent="SAVE CHANGES";$("#postText").focus();toast("編集モードです。内容を変更して保存してください。")}
+  $("#publishBtn").addEventListener("click",async()=>{
+    if(!isOwner)return;const body=$("#postText").value.trim();if(!body){toast("文章を入力してください");return}
+    const btn=$("#publishBtn");btn.disabled=true;
+    try{let imagePath=null;const file=$("#postImage").files[0];if(file)imagePath=await upload(file,"posts");
+      if(editingId){const patch={page:$("#postPage").value,body};if(imagePath)patch.image_path=imagePath;const {error}=await sb.from("posts").update(patch).eq("id",editingId);if(error)throw error;editingId=null;toast("投稿を更新しました")}
+      else{const {error}=await sb.from("posts").insert({page:$("#postPage").value,body,image_path:imagePath});if(error)throw error;toast("投稿しました")}
+      $("#postText").value="";$("#postImage").value="";$("#postFileName").textContent="";btn.textContent="PUBLISH POST";await loadPosts();
+    }catch(err){console.error(err);toast("保存できませんでした。設定と画像サイズを確認してください")}
+    finally{btn.disabled=false}
+  });
+  async function deletePost(row){if(!confirm("この投稿を削除しますか？"))return;const {error}=await sb.from("posts").delete().eq("id",row.id);if(error){toast("削除できませんでした");return}if(row.image_path)await sb.storage.from("site-media").remove([row.image_path]);toast("投稿を削除しました");await loadPosts()}
+  $$("[data-hero]").forEach(input=>input.addEventListener("change",async e=>{const file=e.target.files[0];if(!file||!isOwner)return;try{const page=input.dataset.hero;const path=await upload(file,`heroes/${page}`);const {error}=await sb.from("site_settings").upsert({key:`hero_${page}`,value:path});if(error)throw error;toast(`${pageNames[page]} のメイン画像を変更しました`);await loadHeroes()}catch(err){console.error(err);toast("メイン画像を保存できませんでした")}finally{input.value=""}}));
+  checkSession();
+})();
+</script>
+</body>
+</html>
